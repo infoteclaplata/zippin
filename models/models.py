@@ -64,6 +64,7 @@ class SaleOrder(models.Model):
 class ZippinPickupPoints(models.Model):
     _name = 'zippin.odoo'
 
+    order_id = fields.Char(string="ID Orden")
     carrier_id = fields.Char(string="ID Proveedor")
     point_id = fields.Char(string="ID Sucursal")
     name = fields.Char(string="Nombre/Descripcion")
@@ -73,10 +74,10 @@ class ChooseDeliveryCarrier(models.TransientModel):
     _inherit = 'choose.delivery.carrier'
 
     zippin_pickup_view = fields.Boolean()
-    zippin_pickup = fields.Many2one('zippin.odoo', string="Sucursales")
+    zippin_pickup = fields.Many2one('zippin.odoo', string="Sucursales", domain="[('order_id', '=', order_id)]")
 
     def delete_pickup_points(self):
-        res = self.env['zippin.odoo'].search([]).unlink()
+        res = self.env['zippin.odoo'].search([('order_id','=', int(self.order_id))]).unlink()
         return(res)
 
     @api.onchange('carrier_id')
@@ -263,6 +264,7 @@ class DeliveryCarrier(models.Model):
                 if i["service_type"]["id"] == ID_PICKUP_DELIVERY:
                     for f in i["pickup_points"]:
                         pickup_points = {
+                            "order_id": order.id,
                             "carrier_id": i["carrier"]["id"],
                             "point_id": f["point_id"],
                             "name": f["description"],
