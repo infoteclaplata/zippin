@@ -64,6 +64,7 @@ class SaleOrder(models.Model):
 class ZippinPickupPoints(models.Model):
     _name = 'zippin.odoo'
 
+    carrier_id = fields.Char(string="ID Proveedor")
     point_id = fields.Char(string="ID Sucursal")
     name = fields.Char(string="Nombre/Descripcion")
     address = fields.Char(string="Direccion")
@@ -238,13 +239,6 @@ class DeliveryCarrier(models.Model):
                 if self.product_id.zippin_shipment_type == 'zippin_car_suc':
                     if i["carrier"]["id"] == ID_CORREO_ARGENTINO and i["service_type"]["id"] == ID_PICKUP_DELIVERY:
                         shipment_price = i["amounts"]["price"]
-                        for f in i["pickup_points"]:
-                            pickup_points = {
-                              "point_id": f["point_id"],
-                              "name": f["description"],
-                              "address": f["location"]["street"] + ' ' + f["location"]["street_number"] + ' ' + f["location"]["city"] + ' ' + f["location"]["state"]
-                            }
-                            pickup_res.append(pickup_points)
 
                 elif self.product_id.zippin_shipment_type == 'zippin_car_dom':
                     if i["carrier"]["id"] == ID_CORREO_ARGENTINO and i["service_type"]["id"] == ID_STANDARD_DELIVERY:
@@ -253,13 +247,6 @@ class DeliveryCarrier(models.Model):
                 elif self.product_id.zippin_shipment_type == 'zippin_oca_suc':
                     if i["carrier"]["id"] == ID_OCA and i["service_type"]["id"] == ID_PICKUP_DELIVERY:
                         shipment_price = i["amounts"]["price"]
-                        for f in i["pickup_points"]:
-                            pickup_points = {
-                              "point_id": f["point_id"],
-                              "name": f["description"],
-                              "address": f["location"]["street"] + ' ' + f["location"]["street_number"] + ' ' + f["location"]["city"] + ' ' + f["location"]["state"]
-                            }
-                            pickup_res.append(pickup_points)
 
                 elif self.product_id.zippin_shipment_type == 'zippin_oca_dom':
                     if i["carrier"]["id"] == ID_OCA and i["service_type"]["id"] == ID_STANDARD_DELIVERY:
@@ -268,17 +255,20 @@ class DeliveryCarrier(models.Model):
                 elif self.product_id.zippin_shipment_type == 'zippin_and_suc':
                     if i["carrier"]["id"] == ID_ANDREANI and i["service_type"]["id"] == ID_PICKUP_DELIVERY:
                         shipment_price = i["amounts"]["price"]
-                        for f in i["pickup_points"]:
-                            pickup_points = {
-                              "point_id": f["point_id"],
-                              "name": f["description"],
-                              "address": f["location"]["street"] + ' ' + f["location"]["street_number"] + ' ' + f["location"]["city"] + ' ' + f["location"]["state"]
-                            }
-                            pickup_res.append(pickup_points)
 
                 elif self.product_id.zippin_shipment_type == 'zippin_and_dom':
                     if i["carrier"]["id"] == ID_ANDREANI and i["service_type"]["id"] == ID_STANDARD_DELIVERY:
                         shipment_price = i["amounts"]["price"]
+
+                if i["service_type"]["id"] == ID_PICKUP_DELIVERY:
+                    for f in i["pickup_points"]:
+                        pickup_points = {
+                            "carrier_id": i["carrier"]["id"],
+                            "point_id": f["point_id"],
+                            "name": f["description"],
+                            "address": f["location"]["street"] + ' ' + f["location"]["street_number"] + ' ' + f["location"]["city"] + ' ' + f["location"]["state"]
+                        }
+                        pickup_res.append(pickup_points)
 
             if shipment_price != -1:
                 return {
