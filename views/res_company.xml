@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record model="ir.ui.view" id="view_company_page_zippin">
             <field name="name">res.company.form.zippin</field>
             <field name="model">res.company</field>
@@ -19,6 +18,5 @@
                 </data>
             </field>
         </record>
-
     </data>
 </odoo>
