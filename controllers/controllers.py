@@ -22,8 +22,8 @@ class WebsiteSalePickUp(WebsiteSaleDelivery):
             values['deliveries'] = delivery_carriers.sudo()
 
         values['delivery_has_storable'] = has_storable_products
-        values['zippin_car_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '233')])
-        values['zippin_oca_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '208')])
-        values['zippin_and_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '1')])
+        values['zippin_car_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '233'), ('order_id','=', order.id)])
+        values['zippin_oca_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '208'), ('order_id','=', order.id)])
+        values['zippin_and_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '1'), ('order_id','=', order.id)])
         values['delivery_action_id'] = request.env.ref('delivery.action_delivery_carrier_form').id
         return values
