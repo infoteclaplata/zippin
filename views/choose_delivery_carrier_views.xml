@@ -18,6 +18,7 @@
             <form>
                 <group>
                     <group>
+                        <field name="carrier_id"/>
                         <field name="point_id"/>
                         <field name="name" />
                         <field name="address" />
