@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="payment_delivery" name="Delivery Costs" inherit_id="website_sale.payment">
-        <xpath expr="//div[@id='delivery_method']" position="inside">
-                <p><h3 class="mb24">Sucursales disponibles</h3></p>
-                <select class="form-control" name="zippin_pickup">
-                     <t t-foreach="zippin_pickup" t-as="pickup">
-                          <option t-attf-value="pickup.point_id"><t t-esc="pickup.name"/></option>
-                     </t>
-                 </select>
+    <template id="payment_delivery_pickup" name="Delivery Pickups" inherit_id="website_sale.payment">
+        <xpath expr="//t[@t-foreach='deliveries']" position="inside">
+            <xpath expr="//t[@t-foreach='deliveries']" position="after">
+                <t t-if="'Correo Argentino a Sucursal' in delivery.name">
+                    <select class="form-control" name="zippin_pickup">
+                        <t t-foreach="zippin_car_suc" t-as="pickup">
+                              <option t-attf-value="pickup.point_id"><t t-esc="pickup.name"/></option>
+                        </t>
+                    </select>
+                    <p></p>
+                </t>
+                <t t-if="'OCA a Sucursal' in delivery.name">
+                    <select class="form-control" name="zippin_pickup">
+                        <t t-foreach="zippin_oca_suc" t-as="pickup">
+                              <option t-attf-value="pickup.point_id"><t t-esc="pickup.name"/></option>
+                        </t>
+                    </select>
+                    <p></p>
+                </t>
+                <t t-if="'Andreani a Sucursal' in delivery.name">
+                    <select class="form-control" name="zippin_pickup">
+                        <t t-foreach="zippin_and_suc" t-as="pickup">
+                              <option t-attf-value="pickup.point_id"><t t-esc="pickup.name"/></option>
+                        </t>
+                    </select>
+                    <p></p>
+                </t>
+            </xpath>
         </xpath>
     </template>
 </odoo>
