@@ -1,4 +1,4 @@
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 from odoo.addons.website_sale_delivery.controllers.main import WebsiteSaleDelivery
 
@@ -22,6 +22,8 @@ class WebsiteSalePickUp(WebsiteSaleDelivery):
             values['deliveries'] = delivery_carriers.sudo()
 
         values['delivery_has_storable'] = has_storable_products
-        values['zippin_pickup'] = request.env['zippin.odoo'].sudo().search([])
+        values['zippin_car_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '233')])
+        values['zippin_oca_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '208')])
+        values['zippin_and_suc'] = request.env['zippin.odoo'].sudo().search([('carrier_id','=', '1')])
         values['delivery_action_id'] = request.env.ref('delivery.action_delivery_carrier_form').id
         return values
