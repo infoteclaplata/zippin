@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.zippin.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <div name="options" position="inside">
+                <div>
+                    <field name="zippin_shipment" />
+                    <label for="zippin_shipment" />
+                </div>
+            </div>
+            <notebook position="inside">
+                <page
+                    name="page_zippin"
+                    string="Zippin"
+                    attrs="{'invisible': [('zippin_shipment', '=', False)]}"
+                >
+                    <group name="group_zippin">
+                        <group colspan="4" col="4">
+                            <field
+                                name="zippin_shipment_type"
+                                attrs="{'required':[('zippin_shipment','=',True)]}"
+                            />
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>
