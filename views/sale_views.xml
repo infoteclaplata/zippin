@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_company_page_zippin">
+            <field name="name">sale.order.form.zippin</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <notebook>
+                        <page string="Zippin">
+                        </page>
+                    </notebook>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>
