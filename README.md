@@ -5,11 +5,16 @@ Conector Zippin-Odoo para envios
 
 Luego de instalar crear los siguientes métodos de envio (nombre exacto sin comillas):
 
-"Correo Argentino a Domicilio"\n
+"Correo Argentino a Domicilio"
+
 "Correo Argentino a Sucursal"
+
 "OCA a Domicilio"
+
 "OCA a Sucursal"
+
 "Andreani a Domicilio"
+
 "Andreani a Sucursal"
 
 - Elegir proveedor Zippin dentro de cada método de envio creado.
