@@ -8,6 +8,15 @@
                 <data>
                     <notebook>
                         <page string="Zippin">
+                            <group>
+                                <field name="zippin_pickup_order_id" />
+                                <field name="zippin_pickup_carrier_id" />
+                                <field name="zippin_pickup_is_pickup" />
+                                <field name="zippin_pickup_point_id" />
+                                <field name="zippin_pickup_name" />
+                                <field name="zippin_pickup_address" />
+                                <field name="zippin_logistic_type" />            
+                            </group>
                         </page>
                     </notebook>
                 </data>
