@@ -18,11 +18,19 @@
     'depends': ['base', 'sale', 'delivery', 'product_dimension'],
 
     'data': [
+        'security/ir.model.access.csv',
         'views/res_company.xml',
         'views/product_template_views.xml',
-        'views/choose_delivery_carrier_views.xml',
         'views/website_sale_delivery_templates.xml',
         'views/zippin_pickup_views.xml',
         'views/sale_views.xml',
-    ]
+        'wizard/choose_delivery_carrier_views.xml',
+    ],
+
+    'assets': {
+        'web.assets_frontend': [
+            'zippin/static/src/js/zippin_odoo.js',
+            'zippin/static/src/scss/zippin_odoo.scss'
+        ],
+    },
 }
