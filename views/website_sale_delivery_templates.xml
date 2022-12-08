@@ -4,25 +4,28 @@
         <xpath expr="//t[@t-foreach='deliveries']" position="inside">
             <xpath expr="//t[@t-foreach='deliveries']" position="after">
                 <t t-if="'Correo Argentino a Sucursal' in delivery.name">
-                    <select class="form-control" name="zippin_pickup">
+                    <select class="zippin_car_suc" name="zippin_car_suc" id="zippin_car_suc">
+                        <option>Seleccione:</option>
                         <t t-foreach="zippin_car_suc" t-as="pickup">
-                              <option t-attf-value="pickup.point_id"><t t-esc="pickup.name"/></option>
+                              <option t-att-value="'{carrier_id:'+pickup.carrier_id+',point_id:'+pickup.point_id+',name:'+pickup.name+',address:'+pickup.address+'}'"><t t-esc="pickup.name"/></option>
                         </t>
                     </select>
                     <p></p>
                 </t>
                 <t t-if="'OCA a Sucursal' in delivery.name">
-                    <select class="form-control" name="zippin_pickup">
+                    <select class="zippin_oca_suc" name="zippin_oca_suc" id="zippin_oca_suc">
+                        <option>Seleccione:</option>
                         <t t-foreach="zippin_oca_suc" t-as="pickup">
-                              <option t-attf-value="pickup.point_id"><t t-esc="pickup.name"/></option>
+                              <option t-att-value="'{carrier_id:'+pickup.carrier_id+',point_id:'+pickup.point_id+',name:'+pickup.name+',address:'+pickup.address+'}'"><t t-esc="pickup.name"/></option>
                         </t>
                     </select>
                     <p></p>
                 </t>
                 <t t-if="'Andreani a Sucursal' in delivery.name">
-                    <select class="form-control" name="zippin_pickup">
+                    <select class="zippin_and_suc" name="zippin_and_suc" id="zippin_and_suc">
+                        <option>Seleccione:</option>
                         <t t-foreach="zippin_and_suc" t-as="pickup">
-                              <option t-attf-value="pickup.point_id"><t t-esc="pickup.name"/></option>
+                                <option t-att-value="'{carrier_id:'+pickup.carrier_id+',point_id:'+pickup.point_id+',name:'+pickup.name+',address:'+pickup.address+'}'"><t t-esc="pickup.name"/></option>
                         </t>
                     </select>
                     <p></p>
