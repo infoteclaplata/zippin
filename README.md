@@ -3,7 +3,8 @@ Conector Zippin-Odoo para envios
 
 **¡Modulo en desarrollo! No usar en producción**
 
-- Luego de instalar crear los siguientes métodos de envio (nombre exacto sin comillas):
+- Ingresar las credenciales de Zippin en ajustes de la empresa.
+- Crear los siguientes métodos de envio (nombre exacto sin comillas):
 
 "Correo Argentino a Domicilio"
 
