@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="delivery_carrier_form_view" model="ir.ui.view">
+        <field name="name">delivery.carrier.zippin.form</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+        <field name="arch" type="xml">
+            <field name="integration_level" position="after">
+                <field name="zippin_shipment" />
+            </field>
+            <notebook position="inside">
+                <page
+                    name="page_zippin"
+                    string="Zippin"
+                    attrs="{'invisible': [('zippin_shipment', '=', False)]}"
+                >
+                    <group name="group_zippin">
+                        <group colspan="4" col="4">
+                            <field
+                                name="zippin_shipment_type"
+                                attrs="{'required':[('zippin_shipment','=',True)]}"
+                            />
+                            <field name="zippin_shipment_type_is_pickup" />
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>
