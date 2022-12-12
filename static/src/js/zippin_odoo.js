@@ -1,4 +1,4 @@
-odoo.define('zippin_pickup_points.payment', function(require) {
+odoo.define('zippin_shipping.payment', function(require) {
     "use strict";
 
     var ajax = require('web.ajax');
@@ -12,21 +12,21 @@ odoo.define('zippin_pickup_points.payment', function(require) {
             document.getElementById("zippin_and_suc").selectedIndex = "0";
 
             let res = $('select.zippin_car_suc').val();
-            var inicio = res.indexOf("carrier_id:");
-            var fin = res.indexOf(",point_id:");
-            let carrier_id = res.substring(inicio+11, fin);
+            var i = res.indexOf("carrier_id:");
+            var f = res.indexOf(",point_id:");
+            let carrier_id = res.substring(i+11, f);
 
-            var inicio = res.indexOf("point_id:");
-            var fin = res.indexOf(",name:");
-            let point_id = res.substring(inicio+9, fin);
+            var i = res.indexOf("point_id:");
+            var f = res.indexOf(",name:");
+            let point_id = res.substring(i+9, f);
 
-            var inicio = res.indexOf("name:");
-            var fin = res.indexOf(",address:");
-            let name = res.substring(inicio+5, fin);
+            var i = res.indexOf("name:");
+            var f = res.indexOf(",address:");
+            let name = res.substring(i+5, f);
 
-            var inicio = res.indexOf("address:");
-            var fin = res.indexOf("}");
-            let address = res.substring(inicio+8, fin);
+            var i = res.indexOf("address:");
+            var f = res.indexOf("}");
+            let address = res.substring(i+8, f);
 
             ajax.jsonRpc('/shop/zippin_odoo', 'call', {
                 'carrier_id': carrier_id,
@@ -43,21 +43,21 @@ odoo.define('zippin_pickup_points.payment', function(require) {
             document.getElementById("zippin_and_suc").selectedIndex = "0";
 
             let res = $('select.zippin_oca_suc').val();
-            var inicio = res.indexOf("carrier_id:");
-            var fin = res.indexOf(",point_id:");
-            let carrier_id = res.substring(inicio+11, fin);
+            var i = res.indexOf("carrier_id:");
+            var f = res.indexOf(",point_id:");
+            let carrier_id = res.substring(i+11, f);
 
-            var inicio = res.indexOf("point_id:");
-            var fin = res.indexOf(",name:");
-            let point_id = res.substring(inicio+9, fin);
+            var i = res.indexOf("point_id:");
+            var f = res.indexOf(",name:");
+            let point_id = res.substring(i+9, f);
 
-            var inicio = res.indexOf("name:");
-            var fin = res.indexOf(",address:");
-            let name = res.substring(inicio+5, fin);
+            var i = res.indexOf("name:");
+            var f = res.indexOf(",address:");
+            let name = res.substring(i+5, f);
 
-            var inicio = res.indexOf("address:");
-            var fin = res.indexOf("}");
-            let address = res.substring(inicio+8, fin);
+            var i = res.indexOf("address:");
+            var f = res.indexOf("}");
+            let address = res.substring(i+8, f);
 
             ajax.jsonRpc('/shop/zippin_odoo', 'call', {
                 'carrier_id': carrier_id,
@@ -74,21 +74,21 @@ odoo.define('zippin_pickup_points.payment', function(require) {
             document.getElementById("zippin_oca_suc").selectedIndex = "0";
 
             let res = $('select.zippin_and_suc').val();
-            var inicio = res.indexOf("carrier_id:");
-            var fin = res.indexOf(",point_id:");
-            let carrier_id = res.substring(inicio+11, fin);
+            var i = res.indexOf("carrier_id:");
+            var f = res.indexOf(",point_id:");
+            let carrier_id = res.substring(i+11, f);
 
-            var inicio = res.indexOf("point_id:");
-            var fin = res.indexOf(",name:");
-            let point_id = res.substring(inicio+9, fin);
+            var i = res.indexOf("point_id:");
+            var f = res.indexOf(",name:");
+            let point_id = res.substring(i+9, f);
 
-            var inicio = res.indexOf("name:");
-            var fin = res.indexOf(",address:");
-            let name = res.substring(inicio+5, fin);
+            var i = res.indexOf("name:");
+            var f = res.indexOf(",address:");
+            let name = res.substring(i+5, f);
 
-            var inicio = res.indexOf("address:");
-            var fin = res.indexOf("}");
-            let address = res.substring(inicio+8, fin);
+            var i = res.indexOf("address:");
+            var f = res.indexOf("}");
+            let address = res.substring(i+8, f);
 
             ajax.jsonRpc('/shop/zippin_odoo', 'call', {
                 'carrier_id': carrier_id,
