@@ -9,7 +9,7 @@
                 <field name="zippin_pickup_view_invisible" invisible="1"/>
                 <field name="zippin_pickup_view_id" invisible="1"/>
                 <field name="zippin_pickup" attrs="{'invisible':[('zippin_pickup_view_invisible', '=', True)]}"
-                    domain="[('carrier_id','=', zippin_pickup_view_id)]"/>
+                    domain="[('carrier_id','=', zippin_pickup_view_id),('order_id', '=', order_id)]"/>
             </xpath>
         </field>
     </record>
