@@ -5,17 +5,33 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                <header>
+                    <field name="zippin_create_shipping_view" invisible="1"/>
+                    <field name="zippin_create_label_view" invisible="1"/>
+                    <button type="object" name="action_zippin_create_shipping" string="Crear envío con Zippin" 
+                        attrs="{'invisible':[('zippin_create_shipping_view', '=', True)]}" />
+                    <button type="object" name="action_zippin_get_label" string="Generar etiqueta Zippin" 
+                        attrs="{'invisible':[('zippin_create_label_view', '=', True)]}" />
+                </header>
                 <data>
                     <notebook>
                         <page string="Zippin">
                             <group>
+                                <field name="zippin_shipping_label_bin" filename="zippin_shipping_label_filename" />
                                 <field name="zippin_pickup_order_id" />
                                 <field name="zippin_pickup_carrier_id" />
                                 <field name="zippin_pickup_is_pickup" />
                                 <field name="zippin_pickup_point_id" />
                                 <field name="zippin_pickup_name" />
                                 <field name="zippin_pickup_address" />
-                                <field name="zippin_logistic_type" />            
+                                <field name="zippin_logistic_type" />     
+                                <field name="zippin_shipping_id" readonly="1" />    
+                                <field name="zippin_shipping_delivery_id" readonly="1" />   
+                                <field name="zippin_shipping_carrier_tracking_id" readonly="1" /> 
+                                <field name="zippin_shipping_carrier_tracking_id_alt" readonly="1" /> 
+                                <field name="zippin_shipping_tracking" readonly="1" /> 
+                                <field name="zippin_shipping_tracking_external" readonly="1" />
+                                <field name="zippin_shipping_label_filename" invisible="1" />
                             </group>
                         </page>
                     </notebook>
