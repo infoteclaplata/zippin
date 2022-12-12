@@ -2,6 +2,7 @@ from odoo import http, _
 from odoo.http import request
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo.addons.website_sale_delivery.controllers.main import WebsiteSaleDelivery
+from odoo.addons.zippin.models.delivery_carrier import ID_CORREO_ARGENTINO, ID_OCA, ID_ANDREANI
 
 class ZippinPickupPoints(WebsiteSale):
 
@@ -36,8 +37,8 @@ class ZippinWebsiteSale(WebsiteSaleDelivery):
     def _get_shop_payment_values(self, order, **kwargs):
         zp_values = super(ZippinWebsiteSale, self)._get_shop_payment_values(order, **kwargs)
 
-        zp_values['zippin_car_suc'] = request.env['zippin.pickup.points'].sudo().search([('carrier_id','=', '233'), ('order_id','=', order.id)])
-        zp_values['zippin_oca_suc'] = request.env['zippin.pickup.points'].sudo().search([('carrier_id','=', '208'), ('order_id','=', order.id)])
-        zp_values['zippin_and_suc'] = request.env['zippin.pickup.points'].sudo().search([('carrier_id','=', '1'), ('order_id','=', order.id)])
+        zp_values['zippin_car_suc'] = request.env['zippin.shipping'].sudo().search([('carrier_id','=', ID_CORREO_ARGENTINO), ('order_id','=', order.id)])
+        zp_values['zippin_oca_suc'] = request.env['zippin.shipping'].sudo().search([('carrier_id','=', ID_OCA), ('order_id','=', order.id)])
+        zp_values['zippin_and_suc'] = request.env['zippin.shipping'].sudo().search([('carrier_id','=', ID_ANDREANI), ('order_id','=', order.id)])
 
         return zp_values
