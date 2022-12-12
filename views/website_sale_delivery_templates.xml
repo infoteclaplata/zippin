@@ -3,7 +3,7 @@
     <template id="payment_delivery_pickup" name="Delivery Pickups" inherit_id="website_sale.payment">
         <xpath expr="//t[@t-foreach='deliveries']" position="inside">
             <xpath expr="//t[@t-foreach='deliveries']" position="after">
-                <t t-if="'Correo Argentino a Sucursal' in delivery.name">
+                <t t-if="delivery.zippin_shipment_type == '233' and delivery.zippin_shipment_type_is_pickup">
                     <select class="zippin_car_suc" name="zippin_car_suc" id="zippin_car_suc">
                         <option>Seleccione:</option>
                         <t t-foreach="zippin_car_suc" t-as="pickup">
@@ -12,7 +12,7 @@
                     </select>
                     <p></p>
                 </t>
-                <t t-if="'OCA a Sucursal' in delivery.name">
+                <t t-if="delivery.zippin_shipment_type == '208' and delivery.zippin_shipment_type_is_pickup">
                     <select class="zippin_oca_suc" name="zippin_oca_suc" id="zippin_oca_suc">
                         <option>Seleccione:</option>
                         <t t-foreach="zippin_oca_suc" t-as="pickup">
@@ -21,7 +21,7 @@
                     </select>
                     <p></p>
                 </t>
-                <t t-if="'Andreani a Sucursal' in delivery.name">
+                <t t-if="delivery.zippin_shipment_type == '1' and delivery.zippin_shipment_type_is_pickup">
                     <select class="zippin_and_suc" name="zippin_and_suc" id="zippin_and_suc">
                         <option>Seleccione:</option>
                         <t t-foreach="zippin_and_suc" t-as="pickup">
