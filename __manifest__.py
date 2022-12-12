@@ -19,11 +19,11 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'views/delivery_views.xml',
         'views/res_company.xml',
-        'views/product_template_views.xml',
+        'views/sale_views.xml',
         'views/website_sale_delivery_templates.xml',
         'views/zippin_pickup_views.xml',
-        'views/sale_views.xml',
         'wizard/choose_delivery_carrier_views.xml',
     ],
 
