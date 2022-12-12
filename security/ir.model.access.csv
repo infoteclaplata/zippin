@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_zippin_pickup_points,access_zippin_pickup_points,zippin.model_zippin_pickup_points,,1,1,1,1
+access_zippin_shipping,access_zippin_shipping,zippin.model_zippin_shipping,,1,1,1,1
