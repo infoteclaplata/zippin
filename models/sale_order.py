@@ -4,6 +4,48 @@ from odoo.addons.zippin.models.delivery_carrier import ID_CORREO_ARGENTINO, ID_O
 from requests.structures import CaseInsensitiveDict
 import requests, base64
 
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    def delete_pickup_points(self):
+        res = self.env['zippin.shipping'].search([('order_id','=', int(self.order_id.id))]).unlink()
+        return(res)
+
+    def delete_zippin_shipping(self):
+        self.order_id.zippin_shipping_label_bin = None
+        self.order_id.zippin_pickup_order_id = None
+        self.order_id.zippin_pickup_carrier_id = None
+        self.order_id.zippin_pickup_is_pickup = None
+        self.order_id.zippin_pickup_point_id = None 
+        self.order_id.zippin_pickup_name = None 
+        self.order_id.zippin_pickup_address = None 
+        self.order_id.zippin_logistic_type = None 
+        self.order_id.zippin_shipping_id = None 
+        self.order_id.zippin_shipping_delivery_id = None 
+        self.order_id.zippin_shipping_carrier_tracking_id = None 
+        self.order_id.zippin_shipping_carrier_tracking_id_alt = None 
+        self.order_id.zippin_shipping_tracking = None 
+        self.order_id.zippin_shipping_tracking_external = None 
+        self.order_id.zippin_create_shipping_view = True
+        self.order_id.zippin_create_label_view = True
+        self.order_id.zippin_delete_shipping_view = True
+
+    #Borra la informacion de envio cuando aun no se generó la etiqueta de envio.
+    def delete_zippin_info(self):
+        if self.order_id.zippin_shipping_id:
+            raise ValidationError('No se puede borrar o actualizar un envío ya creado, primero cancele el envio.')
+        else:
+            self.delete_zippin_shipping()
+
+    #Modifico la funcion unlink para que borre sucursales e informacion de envio en sale.order
+    def unlink(self):
+        for line in self:
+            if line.is_delivery:
+                self.delete_pickup_points()
+                self.delete_zippin_info()
+        res = super(SaleOrderLine, self).unlink()
+        return res
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
@@ -21,10 +63,13 @@ class SaleOrder(models.Model):
     zippin_shipping_carrier_tracking_id_alt = fields.Char()
     zippin_shipping_tracking = fields.Char()
     zippin_shipping_tracking_external = fields.Char()
-    zippin_create_shipping_view = fields.Boolean()
+    zippin_create_shipping_view = fields.Boolean(default='True')
     zippin_create_label_view = fields.Boolean(default='True')
     zippin_shipping_label_bin = fields.Binary()
     zippin_shipping_label_filename = fields.Char(compute='_compute_shipping_label_filename')
+
+
+    zippin_delete_shipping_view = fields.Boolean(default='True')
 
     @api.depends('zippin_shipping_label_bin')
     def _compute_shipping_label_filename(self):
@@ -140,18 +185,28 @@ class SaleOrder(models.Model):
                 zp_phone = zp_phone + self.partner_shipping_id.phone
             elif self.partner_shipping_id.mobile:
                 zp_phone = ' - ' + self.partner_shipping_id.mobile
-            r = {
-                "city": self.partner_shipping_id.city,
-                "state": self.partner_shipping_id.state_id.name,
-                "zipcode": self.partner_shipping_id.zip,
-                "name": self.partner_shipping_id.name,
-                "document": self.partner_shipping_id.vat,
-                "street": self.partner_shipping_id.street,
-                "street_number": self.partner_shipping_id.street2,
-                "street_extras": '',
-                "phone": zp_phone,
-                "email": self.partner_shipping_id.email,
-            }
+
+            if self.zippin_pickup_is_pickup:
+                r = {
+                    "name": self.partner_shipping_id.name,
+                    "document": self.partner_shipping_id.vat,
+                    "phone": zp_phone,
+                    "email": self.partner_shipping_id.email,
+                    "point_id": int(self.zippin_pickup_point_id),
+                }
+            else: 
+                r = {
+                    "city": self.partner_shipping_id.city,
+                    "state": self.partner_shipping_id.state_id.name,
+                    "zipcode": self.partner_shipping_id.zip,
+                    "name": self.partner_shipping_id.name,
+                    "document": self.partner_shipping_id.vat,
+                    "street": self.partner_shipping_id.street,
+                    "street_number": self.partner_shipping_id.street2,
+                    "street_extras": '',
+                    "phone": zp_phone,
+                    "email": self.partner_shipping_id.email,
+                }
         return(r)
 
     def action_zippin_create_shipping(self):
@@ -164,10 +219,10 @@ class SaleOrder(models.Model):
 
         service_type = 'standard_delivery'
         if self.zippin_pickup_is_pickup:
-            service_type = 'pickup_delivery'
+            service_type = 'pickup_point'
 
         data = {
-            "external_id": 'PedidoWeb-OrderID-'+str(self.id),
+            "external_id": str(self.company_id.zippin_description_web)+'-N-'+str(self.id),
             "account_id": self.company_id.zippin_id,
             "origin_id": self._zippin_get_origen_id(),
             "service_type": service_type,
@@ -183,6 +238,7 @@ class SaleOrder(models.Model):
         r = requests.post(url, headers=self._zippin_api_headers(), json=data)
 
         if r.status_code == 201:
+            
             r= r.json()
 
             self.zippin_shipping_id = r["id"]
@@ -193,6 +249,41 @@ class SaleOrder(models.Model):
             self.zippin_shipping_tracking_external = r["tracking_external"]
             self.zippin_create_shipping_view = True
             self.zippin_create_label_view = False
+            self.zippin_delete_shipping_view = False
 
         else:
-            raise ValidationError('Error')
+            r= r.json()
+            raise ValidationError('Zippin Error: ' +r["message"])
+
+    def action_zippin_delete_shipping(self):
+
+        url = APIURL + "/shipments/" + self.zippin_shipping_id +"/cancel"
+        r = requests.post(url, headers=self._zippin_api_headers())
+
+        if r.status_code == 200:
+            r = r.json()
+            self.delete_zippin_shipping()
+        elif r.status_code == 401:
+            raise ValidationError('Zippin: Error, no se pudo cancelar el envío')
+        else:
+            raise ValidationError(r.status_code)
+
+    def delete_zippin_shipping(self):
+
+        self.zippin_shipping_label_bin = None
+        self.zippin_pickup_order_id = None
+        self.zippin_pickup_carrier_id = None
+        self.zippin_pickup_is_pickup = None
+        self.zippin_pickup_point_id = None 
+        self.zippin_pickup_name = None 
+        self.zippin_pickup_address = None 
+        self.zippin_logistic_type = None 
+        self.zippin_shipping_id = None 
+        self.zippin_shipping_delivery_id = None 
+        self.zippin_shipping_carrier_tracking_id = None 
+        self.zippin_shipping_carrier_tracking_id_alt = None 
+        self.zippin_shipping_tracking = None 
+        self.zippin_shipping_tracking_external = None 
+        self.zippin_create_shipping_view = True
+        self.zippin_create_label_view = True
+        self.zippin_delete_shipping_view = True

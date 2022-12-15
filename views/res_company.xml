@@ -11,6 +11,7 @@
                         <page string="Zippin">
                             <group>
                                 <field name="zippin_id" />
+                                <field name="zippin_description_web" />
                                 <field name="zippin_key" />
                                 <field name="zippin_secret" />
                             </group>

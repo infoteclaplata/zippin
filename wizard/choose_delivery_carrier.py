@@ -49,6 +49,7 @@ class ChooseDeliveryCarrier(models.TransientModel):
                     'zippin_pickup_name': self.zippin_pickup['name'],
                     'zippin_pickup_address': self.zippin_pickup['address'],
                     'zippin_logistic_type': self.zippin_pickup['logistic_type'],
+                    'zippin_create_shipping_view': False,
                 })
             else: 
                 self.order_id.write({
@@ -59,6 +60,7 @@ class ChooseDeliveryCarrier(models.TransientModel):
                     'zippin_pickup_name': None,
                     'zippin_pickup_address': None,
                     'zippin_logistic_type': self.zippin_logistic_type,
+                    'zippin_create_shipping_view': False,
                 })
         else:
             if self.delivery_type not in ('fixed', 'base_on_rule'):
